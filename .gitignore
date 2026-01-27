@@ -1,0 +1,41 @@
+# ===== LaTeX =====
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.brf
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+
+# LaTeX builds / intermediate directories
+_minted*
+latex.out/
+build/
+out/
+
+# Common LaTeX outputs (keep if you actually want to version them)
+*.pdf
+
+# ===== Figures / conversions =====
+*.eps-converted-to.pdf
+
+# ===== Editors / OS =====
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+
