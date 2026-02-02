@@ -39,3 +39,10 @@ Thumbs.db
 .vscode/
 
 
+*.pth
+
+datasets/
+paper/
+analysis/
+normal/
+experiments/
