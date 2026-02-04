@@ -55,7 +55,7 @@
       "mosi": {
         "transformers": "bert",
         "pretrained": "bert-base-uncased",
-        "learning_rate": 2e-5,
+        "learning_rate": 1e-5,
         "weight_decay": 0.0001,
         "max_grad_norm": 2,
         "adam_epsilon": 1e-8,
