@@ -186,7 +186,7 @@ where \(f_{\mathcal{S}}(\cdot)\) is the fusion operator of branch \(\mathcal{S}\
 
 \subsection{Encoders and Representations}
 \label{ssec:enc}
-Text, audio, and vision are represented as sequence inputs. Audio and vision may be unaligned with text, and padded time steps are handled via valid lengths or masks. The text encoder is a pretrained language model; the sentence-level representation \(\bm{h}_{\mathrm{T}}\) is taken from the classification token (\texttt{[CLS]}) hidden state. For audio and vision, lightweight temporal encoders model frame-level features and then aggregate them into sentence-level vectors \(\bm{h}_{\mathrm{A}},\bm{h}_{\mathrm{V}}\). The aggregation uses text-guided attentive pooling, where the text representation serves as the query to select semantically relevant segments from the unaligned audio/visual sequences. The resulting \(\bm{h}_{\mathrm{T}},\bm{h}_{\mathrm{A}},\bm{h}_{\mathrm{V}}\) are used for the three-branch predictions and reliability gating.
+Text, audio, and vision are represented as sequence inputs. Audio and vision may be unaligned with text, and padded time steps are handled via valid lengths or masks. The text encoder is a pretrained language model; the sentence-level representation \(\bm{h}_{\mathrm{T}}\) is taken from the classification token ([CLS]) hidden state. For audio and vision, lightweight temporal encoders model frame-level features and then aggregate them into sentence-level vectors \(\bm{h}_{\mathrm{A}},\bm{h}_{\mathrm{V}}\). The aggregation uses text-guided attentive pooling, where the text representation serves as the query to select semantically relevant segments from the unaligned audio/visual sequences. The resulting \(\bm{h}_{\mathrm{T}},\bm{h}_{\mathrm{A}},\bm{h}_{\mathrm{V}}\) are used for the three-branch predictions and reliability gating.
 
 \subsection{Counterfactual Contribution Decomposition}
 \label{ssec:cf}
@@ -282,10 +282,14 @@ Instead of learning weights directly on fused features, gating is applied to the
 \label{ssec:loss}
 
 The overall objective is included in Algorithm~\ref{alg:coregate}. The main task uses MAE (L1) regression loss. To stabilize branch learning and avoid branch collapse (e.g., \(\mathrm{TA}\) and \(\mathrm{TV}\) failing to learn meaningful increments, making \(\Delta_{\mathrm{A}},\Delta_{\mathrm{V}}\) noisy), auxiliary supervision is applied to the three branch outputs \(y_{\mathrm{T}},y_{\mathrm{TA}},y_{\mathrm{TV}}\) in addition to supervising the final prediction \(\hat{y}\). With a branch-loss weight \(\lambda\ge0\), the total objective is
+% \begin{equation}
+% \mathcal{L} = \mathcal{L}_{\hat{y}} + \lambda\left(\mathcal{L}_{\mathrm{T}} + \mathcal{L}_{\mathrm{TA}} + \mathcal{L}_{\mathrm{TV}}\right),
+% \end{equation}
+% where \(\mathcal{L}_{\hat{y}}\) supervises \(\hat{y}\), and \(\mathcal{L}_{\mathrm{T}}, \mathcal{L}_{\mathrm{TA}}, \mathcal{L}_{\mathrm{TV}}\) supervise \(y_{\mathrm{T}}, y_{\mathrm{TA}}, y_{\mathrm{TV}}\), respectively. This design improves the learnability of \(\Delta_{\mathrm{A}},\Delta_{\mathrm{V}}\). Without supervision on \(\mathrm{TA}\) and \(\mathrm{TV}\), the differences may become noisy and weaken the gating mechanism.
 \begin{equation}
 \mathcal{L} = \mathcal{L}_{\hat{y}} + \lambda\left(\mathcal{L}_{\mathrm{T}} + \mathcal{L}_{\mathrm{TA}} + \mathcal{L}_{\mathrm{TV}}\right),
 \end{equation}
-where \(\mathcal{L}_{\hat{y}}\) supervises \(\hat{y}\), and \(\mathcal{L}_{\mathrm{T}}, \mathcal{L}_{\mathrm{TA}}, \mathcal{L}_{\mathrm{TV}}\) supervise \(y_{\mathrm{T}}, y_{\mathrm{TA}}, y_{\mathrm{TV}}\), respectively. This design improves the learnability of \(\Delta_{\mathrm{A}},\Delta_{\mathrm{V}}\). Without supervision on \(\mathrm{TA}\) and \(\mathrm{TV}\), the differences may become noisy and weaken the gating mechanism.
+where $\mathcal{L}_{\hat{y}}$ supervises $\hat{y}$, and $\mathcal{L}_{\mathrm{T}}$, $\mathcal{L}_{\mathrm{TA}}$, $\mathcal{L}_{\mathrm{TV}}$ supervise $y_{\mathrm{T}}$, $y_{\mathrm{TA}}$, $y_{\mathrm{TV}}$, respectively. This design improves the learnability of $\Delta_{\mathrm{A}},\Delta_{\mathrm{V}}$. Without supervision on $\mathrm{TA}$ and $\mathrm{TV}$, the differences may become noisy and weaken the gating mechanism.
 
 \section{EXPERIMENTAL RESULTS}
 \label{sec:exp}
@@ -298,7 +302,7 @@ We evaluate sentiment regression on CMU-MOSI and CMU-MOSEI using standard splits
 \subsection{Implementation Details}
 \label{ssec:impl}
 
-We use publicly released unaligned features (maximum lengths: 50/500/375 for text/audio/vision). The text encoder is \texttt{bert-base-uncased} and is fine-tuned end-to-end. Training uses Adam with MAE (L1) loss, learning rate \(1\times10^{-5}\), weight decay \(1\times10^{-4}\), gradient clipping at 2.0, and batch size 64. The best checkpoint is selected by validation loss, with early stopping if no improvement is observed for 8 epochs. All experiments are conducted on Ubuntu 22.04.5 with PyTorch 2.10.0 (CUDA 12.8) on an NVIDIA GeForce RTX 4090 (24GB) GPU and an AMD EPYC 9654 CPU.
+We use publicly released unaligned features (maximum lengths: 50/500/375 for text/audio/vision). The text encoder is \textit{BERT-base-uncased} and is fine-tuned end-to-end. Training uses Adam with MAE (L1) loss, learning rate \(1\times10^{-5}\), weight decay \(1\times10^{-4}\), gradient clipping at 2.0, and batch size 64. The best checkpoint is selected by validation loss, with early stopping if no improvement is observed for 8 epochs. All experiments are conducted on Ubuntu 22.04.5 with PyTorch 2.10.0 (CUDA 12.8) on an NVIDIA GeForce RTX 4090 (24GB) GPU and an AMD EPYC 9654 CPU.
 
 \subsection{Evaluation of Our Method}
 \label{ssec:main}
