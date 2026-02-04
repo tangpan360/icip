@@ -98,6 +98,20 @@
 \usepackage{listings}%
 \usepackage{url} % 必须加载
 \usepackage{bm} % for \bm{...} in equations
+
+% Clickable hyperlinks (references/citations/URLs)
+% Load hyperref near the end of the preamble.
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue,
+  bookmarksnumbered=true,
+  pdfstartview=FitH
+}
+% Keep URL font consistent with the surrounding text
+\urlstyle{same}
 % Example definitions.
 % --------------------
 \def\x{{\mathbf x}}
@@ -129,7 +143,7 @@ $^{7}$ School of Life Sciences, Tsinghua University, China
 \maketitle
 %
 \begin{abstract}
-In multimodal sentiment analysis, text is often more reliable than audio and vision. However, audiovisual signals can be noisy, missing, or semantically inconsistent with the text (e.g., sarcasm). In such cases, straightforward fusion may inject unreliable evidence and amplify prediction errors. We propose CoReGate (Counterfactual Reliability-Gated Fusion), which models non-textual modalities as marginal corrections to a text-backbone predictor. Multi-branch predictors explicitly estimate the marginal contributions from audio and vision, while sample-wise reliability gates selectively inject these corrections. This design suppresses unreliable increments when non-textual modalities are unreliable, improving prediction stability. Experiments on CMU-MOSI and CMU-MOSEI demonstrate competitive performance on standard metrics and improved robustness under missing-modality stress tests.
+In multimodal sentiment analysis, text is often more reliable than audio and vision. However, audiovisual signals can be noisy, missing, or semantically inconsistent with the text (e.g., sarcasm). In such cases, straightforward fusion may inject unreliable evidence and amplify prediction errors. We propose CoReGate (Counterfactual Reliability-Gated Fusion), which models non-textual modalities as marginal corrections to a text-backbone predictor. Multi-branch predictors explicitly estimate the marginal contributions from audio and vision, while sample-wise reliability gates selectively inject these corrections. This design suppresses unreliable increments when non-textual modalities are unreliable, improving prediction stability. Experiments on CMU-MOSI and CMU-MOSEI demonstrate competitive performance on standard metrics and improved robustness under missing-modality stress tests. Our code is available at \url{https://github.com/tangpan360/CoReGate}.
 \end{abstract}
 %
 \begin{keywords}
@@ -309,9 +323,9 @@ We use publicly released unaligned features (maximum lengths: 50/500/375 for tex
 
 Table~\ref{tab:main} reports the main results on MOSI and MOSEI. Overall, the proposed method achieves competitive performance on both datasets and reaches the best or tied-best results on several key metrics.
 
-On CMU-MOSI, the method achieves the best MAE and Corr, and also performs best under both Has0 and Non0 settings for binary Acc2/F1. Compared with a strong baseline CENET~\cite{wang2022cross}, MAE improves from 0.739 to 0.707 and Corr improves from 0.789 to 0.794, supporting the benefit of gating incremental non-textual evidence on top of a text backbone. The best Acc7 is achieved by Self-MM~\cite{yu2021learning}; our Acc7 (47.7) is close and remains competitive.
+On CMU-MOSI, the method achieves the best MAE and Corr, and also performs best under both Has0 and Non0 settings for binary Acc2/F1. Compared with a strong baseline CENET~\cite{wang2022cross}, MAE improves from 0.739 to 0.707 and Corr improves from 0.789 to 0.794, supporting the benefit of gating incremental non-textual evidence on top of a text backbone. While the best Acc7 is achieved by Self-MM~\cite{yu2021learning}, our Acc7 (47.7) remains competitive and is close to the best.
 
-On CMU-MOSEI, the method achieves a slightly lower MAE and a higher Corr than CENET~\cite{wang2022cross}, while remaining competitive on Acc7. It also attains the best Non0 Acc2/F1 (excluding neutral samples). The best Has0 binary results are achieved by other methods (e.g., LF-DNN~\cite{williams2018dnn}), indicating that advantages may vary across evaluation protocols.
+On CMU-MOSEI, the method is strong across most metrics. It ties the best MAE (0.529) and achieves the best Corr (0.777) among compared methods, while remaining competitive on Acc7. It also attains the best Non0 Acc2/F1 (excluding neutral samples), indicating that reliability-gated incremental fusion is particularly beneficial when neutral samples are excluded. The best Has0 binary results are achieved by other methods (e.g., LF-DNN~\cite{williams2018dnn}), suggesting that different evaluation protocols may emphasize different aspects of performance.
 
 
 \subsection{Ablation and Discussion}
@@ -332,9 +346,9 @@ Table~\ref{tab:ablation} summarizes the ablation results. Four key design choice
     \hline
     Setting & MAE$\downarrow$ & Corr$\uparrow$ & Acc7$\uparrow$ \\
     \hline
-    Full (CoReGate) & \textbf{0.7159} & \textbf{0.7944} & \textbf{46.94} \\
+    Full (CoReGate) & \textbf{0.7065} & \textbf{0.7936} & \textbf{47.67} \\
     w/o decomposition & 0.7298 & 0.7915 & 45.62 \\
-    w/o gating & 0.7211 & 0.7932 & 45.34 \\
+    w/o gating & 0.7211 & 0.7920 & 46.34 \\
     w/o branch sup & 0.7405 & 0.7903 & 44.75 \\
     t-only (\(y=y_{\mathrm{T}}\)) & 0.7370 & 0.7903 & 45.19 \\
     a-only (\(y=y_{\mathrm{A}}\)) & 0.9342 & 0.7019 & 33.38 \\
@@ -350,20 +364,20 @@ Table~\ref{tab:ablation} summarizes the ablation results. Four key design choice
     \hline
     Setting & MAE$\downarrow$ & Corr$\uparrow$ & Acc7$\uparrow$ \\
     \hline
-    Full (CoReGate) & \textbf{0.5286} & \textbf{0.7746} & \textbf{54.56} \\
-    w/o decomposition & 0.5347 & 0.7719 & 54.03 \\
-    w/o gating & 0.5318 & 0.7728 & 54.12 \\
-    w/o branch sup & 0.5362 & 0.7712 & 53.68 \\
-    t-only (\(y=y_{\mathrm{T}}\)) & 0.5422 & 0.7665 & 53.21 \\
+    Full (CoReGate) & \textbf{0.5288} & \textbf{0.7768} & \textbf{53.10} \\
+    w/o decomposition & 0.5347 & 0.7719 & 52.15 \\
+    w/o gating & 0.5318 & 0.7728 & 52.48 \\
+    w/o branch sup & 0.5362 & 0.7712 & 51.87 \\
+    t-only (\(y=y_{\mathrm{T}}\)) & 0.5422 & 0.7665 & 52.31 \\
     a-only (\(y=y_{\mathrm{A}}\)) & 0.5989 & 0.7129 & 48.92 \\
     v-only (\(y=y_{\mathrm{V}}\)) & 0.6477 & 0.6484 & 47.97 \\
     \hline
   \end{tabular}
 \end{table}
 
-The following observations can be made from Table~\ref{tab:ablation}. First, counterfactual contribution decomposition is effective. Compared with w/o decomposition (direct fusion), the full model reduces MAE by \(0.0139/0.0061\) on MOSI/MOSEI, improves Corr by \(0.0029/0.0027\), and improves Acc7 by \(1.32/0.53\) points. This indicates that modeling non-textual modalities as increments relative to a text backbone is beneficial.
-Second, reliability gating has a limited effect on standard test sets, but becomes more important under missing-modality stress tests. The gains on standard test sets are modest (e.g., MAE improves by \(0.0052/0.0032\) on MOSI/MOSEI), while the benefit becomes significant under missing-modality stress tests (Fig.~\ref{fig:robust_missing}). This matches the goal of suppressing unreliable increments under missing inputs.
-Third, branch auxiliary supervision is important. Removing branch supervision (w/o branch sup) consistently degrades performance, with MAE increasing by \(+0.0246/+0.0076\) on MOSI/MOSEI. This suggests that explicit constraints on \(\mathrm{T}\), \(\mathrm{TA}\), and \(\mathrm{TV}\) branches help stabilize the learning of \(\Delta_{\mathrm{A}}\) and \(\Delta_{\mathrm{V}}\).
+The following observations can be made from Table~\ref{tab:ablation}. First, counterfactual contribution decomposition is effective: compared with w/o decomposition, the full model reduces MAE by \(0.0233/0.0059\), improves Corr by \(0.0021/0.0049\), and improves Acc7 by \(2.05/0.95\) points on MOSI/MOSEI.
+Second, reliability gating is beneficial: compared with w/o gating, the full model reduces MAE by \(0.0146/0.0030\), improves Corr by \(0.0016/0.0040\), and improves Acc7 by \(1.33/0.62\) points on MOSI/MOSEI. The benefit becomes even more significant under missing-modality stress tests (Fig.~\ref{fig:robust_missing}), matching the goal of suppressing unreliable increments under missing inputs.
+Third, branch auxiliary supervision is important: removing branch supervision (w/o branch sup) increases MAE by \(0.0340/0.0074\), decreases Corr by \(0.0033/0.0056\), and decreases Acc7 by \(2.92/1.23\) points on MOSI/MOSEI. This suggests auxiliary losses help stabilize the learning of \(\Delta_{\mathrm{A}}\) and \(\Delta_{\mathrm{V}}\) for both regression accuracy and correlation.
 Finally, the text backbone is necessary in the output-selection ablation. t-only substantially outperforms a-only and v-only on both datasets, showing that non-text-only heads are insufficient under this evaluation setting. This supports the text-backbone formulation with incremental audio/visual corrections.
 
 Overall, CoReGate turns modality contribution from an implicit weight into a computable counterfactual difference, and then selectively injects incremental evidence through reliability gating. This makes the fusion process easier to analyze and compare from a contribution perspective.
@@ -380,12 +394,12 @@ To evaluate reliability gating under missing inputs, three test-time settings ar
   \label{fig:robust_missing}
 \end{figure}
 
-Reliability gating provides consistent robustness gains under missing modalities. When gating is forced off, MAE increases across missing settings on both datasets. For example, on MOSI, MAE increases by about \(+0.020\) under missing-V and by about \(+0.009\) under missing-A\&V. On MOSEI, MAE increases by about \(+0.025\sim+0.026\) across the three missing settings. These results support the motivation: applying gates to incremental corrections helps suppress unreliable injection under missing-modality stress tests.
+Reliability gating provides consistent robustness gains under missing modalities. When gating is forced off, MAE increases across missing settings on both datasets. For example, on MOSI, MAE increases by about \(+0.008\) under missing-V and by about \(+0.004\) under missing-A\&V (and \(+0.004\) under missing-A). On MOSEI, MAE increases by about \(+0.017\) under missing-A, \(+0.011\) under missing-V, and \(+0.005\) under missing-A\&V. These results support the motivation: applying gates to incremental corrections helps suppress unreliable injection under missing-modality stress tests.
 
 \section{CONCLUSION}
 \label{sec:conc}
 
-This paper investigates robust multimodal sentiment analysis under noisy, missing, and semantically conflicting non-textual modalities. CoReGate (Counterfactual Reliability-Gated Fusion) is introduced to model audio and vision as incremental corrections to a text backbone. Multi-branch predictors explicitly estimate marginal contributions, and sample-wise reliability gates selectively inject these corrections. Experiments on CMU-MOSI and CMU-MOSEI show competitive performance on standard metrics (e.g., MAE 0.716 and Corr 0.794 on MOSI, and Acc7 54.6\% on MOSEI). More importantly, missing-modality stress tests verify the robustness benefit of reliability gating. The framework highlights the advantage of turning modality contribution from an implicit weight into a computable counterfactual difference. Future work may explore finer-grained temporal gating, richer cross-modal interaction modeling, and broader robustness validation under diverse noise/missing/conflict conditions.
+This paper investigates robust multimodal sentiment analysis under noisy, missing, and semantically conflicting non-textual modalities. CoReGate (Counterfactual Reliability-Gated Fusion) is introduced to model audio and vision as incremental corrections to a text backbone. Multi-branch predictors explicitly estimate marginal contributions, and sample-wise reliability gates selectively inject these corrections. Experiments on CMU-MOSI and CMU-MOSEI show competitive performance on standard metrics. More importantly, missing-modality stress tests verify the robustness benefit of reliability gating. The framework highlights the advantage of turning modality contribution from an implicit weight into a computable counterfactual difference. Future work may explore finer-grained temporal gating, richer cross-modal interaction modeling, and broader robustness validation under diverse noise/missing/conflict conditions.
 
 \vfill\pagebreak
 
