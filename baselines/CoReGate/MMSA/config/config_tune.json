@@ -1,0 +1,82 @@
+{
+  "datasetCommonParams": {
+    "dataset_root_dir": "/home/ubuntu/tp/021-multimodal_emotion_analysis/001-icip/datasets/MMSA-Standard",
+    "mosi": {
+      "aligned": {
+        "featurePath": "MOSI/Processed/aligned_50.pkl",
+        "seq_lens": [50, 50, 50],
+        "feature_dims": [768, 5, 20],
+        "train_samples": 1284,
+        "num_classes": 3,
+        "language": "en",
+        "KeyEval": "Loss"
+      },
+      "unaligned": {
+        "featurePath": "MOSI/Processed/unaligned_50.pkl",
+        "seq_lens": [50, 500, 375],
+        "feature_dims": [768, 5, 20],
+        "train_samples": 1284,
+        "num_classes": 3,
+        "language": "en",
+        "KeyEval": "Loss"
+      }
+    },
+    "mosei": {
+      "aligned": {
+        "featurePath": "MOSEI/Processed/aligned_50.pkl",
+        "seq_lens": [50, 50, 50],
+        "feature_dims": [768, 74, 35],
+        "train_samples": 16326,
+        "num_classes": 3,
+        "language": "en",
+        "KeyEval": "Loss"
+      },
+      "unaligned": {
+        "featurePath": "MOSEI/Processed/unaligned_50.pkl",
+        "seq_lens": [50, 500, 375],
+        "feature_dims": [768, 74, 35],
+        "train_samples": 16326,
+        "num_classes": 3,
+        "language": "en",
+        "KeyEval": "Loss"
+      }
+    }
+  },
+  "coregate": {
+    "commonParams": {
+      "need_data_aligned": false,
+      "need_model_aligned": false,
+      "need_normalized": false,
+      "use_bert": true,
+      "use_finetune": true,
+      "early_stop": 8,
+      "transformers": "bert",
+      "pretrained": "bert-base-uncased"
+    },
+    "debugParams": {
+      "d_paras": [
+        "learning_rate",
+        "weight_decay",
+        "max_grad_norm",
+        "adam_epsilon",
+        "batch_size",
+        "av_hidden",
+        "head_hidden",
+        "use_attn_pool",
+        "attn_dim",
+        "branch_loss_weight"
+      ],
+      "learning_rate": [1e-5, 3e-5],
+      "weight_decay": [0.0, 0.0001],
+      "max_grad_norm": 2,
+      "adam_epsilon": [1e-8, 3e-8],
+      "batch_size": [64],
+      "av_hidden": [64],
+      "head_hidden": [128],
+      "use_attn_pool": [true],
+      "attn_dim": [128],
+      "branch_loss_weight": [0.1]
+    }
+  }
+}
+
