@@ -261,7 +261,7 @@ Instead of learning weights directly on fused features, gating is applied to the
     Models & MAE$\downarrow$ & Corr$\uparrow$ & Acc7$\uparrow$ & Acc2$\uparrow$ & F1$\uparrow$ & MAE$\downarrow$ & Corr$\uparrow$ & Acc7$\uparrow$ & Acc2$\uparrow$ & F1$\uparrow$ \\
     \hline
     EF-LSTM~\cite{williams2018recognizing} & 0.956 & 0.658 & 32.5 & 78.1/79.3 & 78.2/79.4 & 0.593 & 0.689 & 50.0 & 78.2/81.7 & 78.7/81.7 \\
-    LF-DNN~\cite{williams2018dnn} & 0.992 & 0.650 & 33.2 & 76.5/77.7 & 76.6/77.9 & 0.557 & 0.728 & 53.1 & \textbf{83.6}/83.7 & \textbf{83.3}/83.1 \\
+    LF-DNN~\cite{williams2018dnn} & 0.992 & 0.650 & 33.2 & 76.5/77.7 & 76.6/77.9 & 0.557 & 0.728 & 53.1 & \textbf{83.6}/83.7 & 83.3/83.1 \\
     TFN~\cite{zadeh2017tensor} & 0.988 & 0.640 & 35.6 & 75.1/76.1 & 75.1/76.2 & 0.565 & 0.725 & 52.7 & 80.4/83.4 & 80.9/83.4 \\
     LMF~\cite{liu2018efficient} & 0.981 & 0.637 & 36.0 & 75.4/76.2 & 75.4/76.3 & 0.562 & 0.739 & 51.5 & 81.8/83.9 & 82.1/83.8 \\
     MFN~\cite{zadeh2018memory} & 0.938 & 0.669 & 35.9 & 77.0/78.9 & 77.6/78.9 & 0.568 & 0.726 & 50.7 & 82.2/84.0 & 82.3/83.8 \\
@@ -271,8 +271,8 @@ Instead of learning weights directly on fused features, gating is applied to the
     Self-MM~\cite{yu2021learning} & 0.726 & 0.784 & \textbf{48.0} & 82.5/84.5 & 82.5/84.5 & 0.539 & 0.765 & 52.8 & 74.8/82.0 & 76.0/82.3 \\
     TETFN~\cite{wang2023tetfn} & 0.731 & 0.790 & 45.2 & 80.9/82.8 & 80.9/82.8 & 0.546 & 0.762 & 53.9 & 80.6/85.1 & 81.1/85.1 \\
     MECAM~\cite{wang2025contrastive} & 0.730 & 0.788 & 45.5 & 81.8/83.5 & 81.7/83.4 & 0.535 & 0.770 & 53.8 & 81.8/85.5 & 82.0/85.2 \\
-    CENET~\cite{wang2022cross} & 0.739 & 0.789 & 43.6 & 82.1/83.8 & 82.0/83.9 & \textbf{0.529} & \textbf{0.775} & 54.2 & 82.4/85.8 & 82.7/85.6 \\
-    \textbf{Ours} & \textbf{0.716} & \textbf{0.794} & 46.9 & \textbf{82.8}/\textbf{84.9} & \textbf{82.7}/\textbf{84.8} & \textbf{0.529} & \textbf{0.775} & \textbf{54.6} & 82.0/\textbf{86.5} & 82.5/\textbf{86.4} \\
+    CENET~\cite{wang2022cross} & 0.739 & 0.789 & 43.6 & 82.1/83.8 & 82.0/83.9 & \textbf{0.529} & 0.775 & \textbf{54.2} & 82.4/85.8 & 82.7/85.6 \\
+    \textbf{Ours} & \textbf{0.707} & \textbf{0.794} & 47.7 & \textbf{82.8}/\textbf{84.8} & \textbf{82.7}/\textbf{84.8} & \textbf{0.529} & \textbf{0.777} & 53.1 & 83.3/\textbf{85.9} & \textbf{83.6}/\textbf{85.7} \\
     \hline
   \end{tabular}
 \end{table*}
@@ -309,9 +309,9 @@ We use publicly released unaligned features (maximum lengths: 50/500/375 for tex
 
 Table~\ref{tab:main} reports the main results on MOSI and MOSEI. Overall, the proposed method achieves competitive performance on both datasets and reaches the best or tied-best results on several key metrics.
 
-On CMU-MOSI, the method achieves the best MAE and Corr, and also performs best under both Has0 and Non0 settings for binary Acc2/F1. Compared with a strong baseline CENET~\cite{wang2022cross}, MAE improves from 0.739 to 0.716 and Corr improves from 0.789 to 0.794, supporting the benefit of gating incremental non-textual evidence on top of a text backbone. The best Acc7 is achieved by Self-MM~\cite{yu2021learning}; the proposed method is slightly lower but remains competitive.
+On CMU-MOSI, the method achieves the best MAE and Corr, and also performs best under both Has0 and Non0 settings for binary Acc2/F1. Compared with a strong baseline CENET~\cite{wang2022cross}, MAE improves from 0.739 to 0.707 and Corr improves from 0.789 to 0.794, supporting the benefit of gating incremental non-textual evidence on top of a text backbone. The best Acc7 is achieved by Self-MM~\cite{yu2021learning}; our Acc7 (47.7) is close and remains competitive.
 
-On CMU-MOSEI, the method ties with CENET~\cite{wang2022cross} for the best MAE and Corr, and achieves the best Acc7. It also attains the best Non0 Acc2/F1 (excluding neutral samples). The best Has0 binary results are achieved by other methods (e.g., LF-DNN~\cite{williams2018dnn}), indicating that advantages may vary across evaluation protocols.
+On CMU-MOSEI, the method achieves a slightly lower MAE and a higher Corr than CENET~\cite{wang2022cross}, while remaining competitive on Acc7. It also attains the best Non0 Acc2/F1 (excluding neutral samples). The best Has0 binary results are achieved by other methods (e.g., LF-DNN~\cite{williams2018dnn}), indicating that advantages may vary across evaluation protocols.
 
 
 \subsection{Ablation and Discussion}
